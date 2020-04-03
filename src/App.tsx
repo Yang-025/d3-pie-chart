@@ -33,6 +33,11 @@ function App() {
       .innerRadius(0)
       .outerRadius(radius * 0.8)
 
+    const outerArcGenerator = d3
+      .arc<any>()
+      .innerRadius(radius * 0.9)
+      .outerRadius(radius * 0.9)
+
     pieChartGroup
       .selectAll("path")
       .data(pieGenerator(data))
@@ -51,7 +56,20 @@ function App() {
       .data(pieGenerator(data))
       .join("text")
       .attr("transform", d => {
-        return `translate(${arcGenerator.centroid(d)})`
+        // return `translate(${outerArcGenerator.centroid(d)})`
+        const pos = outerArcGenerator.centroid(d)
+        console.log("01 origin", pos)
+        const midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
+        const atRightSide = midangle < Math.PI
+        const updatedPos = [...pos]
+        // radius * 1.4 * (midangle < Math.PI ? 1 : -1)
+        if (atRightSide) {
+          updatedPos[0] = radius * 1.4 * 1
+        } else {
+          updatedPos[0] = radius * 1.4 * -1
+        }
+        console.log("02 after", updatedPos)
+        return `translate(${updatedPos})`
       })
       .call(text =>
         text

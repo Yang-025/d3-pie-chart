@@ -41,6 +41,34 @@ function App() {
         return colorScale(d.data.company)
       })
       .attr("d", arcGenerator)
+
+    /* **************** 文字部分 **************** */
+    pieChartGroup
+      .append("g")
+      .attr("font-size", 16)
+      .attr("text-anchor", "middle")
+      .selectAll("text")
+      .data(pieGenerator(data))
+      .join("text")
+      .attr("transform", d => {
+        return `translate(${arcGenerator.centroid(d)})`
+      })
+      .call(text =>
+        text
+          .append("tspan")
+          .attr("font-weight", "bold")
+          .attr("x", 0)
+          .text((d: any) => d.data.company)
+      )
+      .call(text =>
+        text
+          .append("tspan")
+          .attr("x", 0)
+          .attr("dy", "1em")
+          .attr("fill", "#84310a")
+          .text((d: any) => d3.format(",")(d.data.stores))
+      )
+    /* **************** 文字部分 END **************** */
   }, [data, svgRef.current])
 
   return (

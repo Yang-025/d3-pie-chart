@@ -70,6 +70,10 @@ function App() {
         }
         return `translate(${updatedPos})`
       })
+      .style("text-anchor", function(d) {
+        var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
+        return midangle < Math.PI ? "start" : "end"
+      })
       .call(text =>
         text
           .append("tspan")

@@ -1,8 +1,9 @@
 import React, { useRef, useEffect } from "react"
 import * as d3 from "d3"
+import * as R from "ramda"
 import * as d3ScaleChromatic from "d3-scale-chromatic"
 import "./App.css"
-import { IData } from "./interface"
+import { IData, ICsvData } from "./interface"
 
 function App() {
   const svgRef = useRef<SVGSVGElement>(null)
@@ -10,10 +11,10 @@ function App() {
   const height = 400
   const radius = Math.min(width, height) / 2
   const data: IData[] = [
-    { company: "統一", stores: 50 },
-    { company: "全家", stores: 30 },
-    { company: "萊爾富", stores: 20 },
-    { company: "來來", stores: 10 },
+    { company: "統一", stores: 5709 },
+    { company: "全家", stores: 2986 },
+    { company: "萊爾富", stores: 1235 },
+    { company: "來來", stores: 679 },
   ]
 
   useEffect(() => {
@@ -46,6 +47,20 @@ function App() {
         return colorScale(d.data.company)
       })
       .attr("d", arcGenerator)
+      .attr("class", "pie")
+
+    /* **************** 互動部分 **************** */
+    pieChartGroup
+      .selectAll(".pie")
+      .on("mouseover", function() {
+        d3.select(this).attr("transform", (d: any): any => {
+          return `scale(1.1,1.1)`
+        })
+      })
+      .on("mouseout", function() {
+        d3.select(this).attr("transform", null)
+      })
+    /* **************** 互動部分 END **************** */
 
     /* **************** 文字部分 **************** */
     pieChartGroup

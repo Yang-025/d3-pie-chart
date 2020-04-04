@@ -68,7 +68,6 @@ function App() {
         } else {
           updatedPos[0] = radius * 1.4 * -1
         }
-        console.log("02 after", updatedPos)
         return `translate(${updatedPos})`
       })
       .call(text =>
@@ -87,6 +86,30 @@ function App() {
           .text((d: any) => d3.format(",")(d.data.stores))
       )
     /* **************** 文字部分 END **************** */
+
+    /* **************** 連線 **************** */
+    pieChartGroup
+      .selectAll("polyline")
+      .data(pieGenerator(data))
+      .join("polyline")
+      .attr("stroke", "black")
+      .style("fill", "none")
+      .attr("stroke-width", 1)
+      .attr("points", function(d: any): any {
+        const posA = arcGenerator.centroid(d)
+        const posB = outerArcGenerator.centroid(d)
+        const midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
+        const atRightSide = midangle < Math.PI
+        const posC = [...posB]
+        if (atRightSide) {
+          posC[0] = radius * 1.28 * 1
+        } else {
+          posC[0] = radius * 1.28 * -1
+        }
+
+        return [posA, posB, posC]
+      })
+    /* **************** 連線 END **************** */
   }, [data, svgRef.current])
 
   return (

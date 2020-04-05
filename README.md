@@ -1,3 +1,7 @@
+## Blog
+
+[Blog](https://www.winsomeyang.com/series/d3js%E7%95%AB%E7%9A%84%E5%9C%93%E9%A4%85%E5%9C%96/d3js%E7%95%AB%E7%9A%84%E5%9C%93%E9%A4%85%E5%9C%96-1-intro)
+
 ## VScode 設定檔
 
 因為此案有用 prettier，提供此案的 settings.json
